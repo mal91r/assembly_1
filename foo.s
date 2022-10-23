@@ -85,16 +85,16 @@ main:
 	push	rbx				# сохраняем rbx на стек	
 	sub	rsp, 88				# rsp -= 88
 	mov	rax, rsp			# rax := rsp
-	mov	rbx, rax
-	lea	rax, -92[rbp]
-	mov	rsi, rax
-	lea	rax, .LC0[rip]
-	mov	rdi, rax
-	mov	eax, 0
-	call	__isoc99_scanf@PLT
-	mov	eax, DWORD PTR -92[rbp]
-	movsx	rdx, eax
-	sub	rdx, 1
+	mov	rbx, rax			# rbx := rax
+	lea	rax, -92[rbp]			# rax := &(-92 на стеке)
+	mov	rsi, rax			# rsi := rax
+	lea	rax, .LC0[rip]			# rax := &(строчка "%d")
+	mov	rdi, rax			# rdi := rax
+	mov	eax, 0				
+	call	__isoc99_scanf@PLT		# scanf("%d", rbp[-92])
+	mov	eax, DWORD PTR -92[rbp]		# eax := 'n'
+	movsx	rdx, eax			# rdx := eax
+	sub	rdx, 1				# rdx++
 	mov	QWORD PTR -64[rbp], rdx
 	movsx	rdx, eax
 	mov	QWORD PTR -112[rbp], rdx
@@ -103,7 +103,7 @@ main:
 	mov	QWORD PTR -128[rbp], rdx
 	mov	QWORD PTR -120[rbp], 0
 	cdqe
-	lea	rdx, 0[0+rax*4]
+	lea	rdx, 0[0+rax*4]			# rdx = rax * 4
 	mov	eax, 16
 	sub	rax, 1
 	add	rax, rdx
